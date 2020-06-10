@@ -54,7 +54,9 @@ plain :: UserName -> Password -> String
 plain user pass = b64Encode $ intercalate "\0" ["", user, pass]
 
 login :: UserName -> Password -> (String, String)
-login user pass = (b64Encode user, b64Encode pass)
+login user pass = (removeNewlines $ b64Encode user, removeNewlines $ b64Encode pass)
+  where
+    removeNewlines = filter (/='\n')
 
 cramMD5 :: String -> UserName -> Password -> String
 cramMD5 challenge user pass =
